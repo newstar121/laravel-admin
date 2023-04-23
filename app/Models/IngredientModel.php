@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class IngredientModel extends Model
 {
-    // $tableName = 'ingredient';
-
     public function getIngredients()
     {
         $results = DB::select('select * from ingredient');
@@ -20,17 +18,48 @@ class IngredientModel extends Model
         $result = DB::delete('delete from ingredient where id = ' . $id);
     }
 
+    public function setActive($id, $isActived) {
+        $result = DB::table('ingredient')->where('id', $id)->update(
+            array(
+                'isActived'     =>   $isActived, 
+            )
+       );
+
+        return $result;
+    }
+    
     public function updateIngredient($insertData)
     {
-        if ($insertData['id']) {
-            $results = DB::insert('insert into ingredients (sku, picture, name, type, stock, unit, cost, recipe, isAcitved) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                array($insertData['sku'], $insertData['picture'], $insertData['name'], $insertData['type'], $insertData['stock'], $insertData['unit'], $insertData['recipe'], $insertData['isAcitived']));
+        if (isset($insertData['id'])) {
+            $result = DB::table('ingredient')->where('id', $insertData['id'])->update(
+                array(
+                    'sku'=>$insertData['sku'],
+                    'picture'=>$insertData['picture'],
+                    'name'=>$insertData['name'],
+                    'type'=>$insertData['type'],
+                    'stock'=>$insertData['stock'],
+                    'unit'=>$insertData['unit'],
+                    'cost'=>$insertData['cost'],
+                    'recipe'=>$insertData['recipe'],
+                )
+            );
+            
         } else {
-            $results = DB::insert('insert into ingredients (sku, picture, name, type, stock, unit, cost, recipe, isAcitved) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                array($insertData['sku'], $insertData['picture'], $insertData['name'], $insertData['type'], $insertData['stock'], $insertData['unit'], $insertData['recipe'], $insertData['isAcitived']));
+            $result = DB::table('ingredient')->insert(
+                array(
+                    'sku'     =>   $insertData['sku'], 
+                    'picture'   =>   $insertData['picture'],
+                    'name'     =>   $insertData['name'], 
+                    'type'     =>   $insertData['type'], 
+                    'stock'     =>   $insertData['stock'], 
+                    'unit'     =>   $insertData['unit'], 
+                    'cost'     =>   $insertData['cost'], 
+                    'recipe'     =>   $insertData['recipe']
+                )
+           );
         }
 
-        return $results;
+        return $result;
     }
 
 }

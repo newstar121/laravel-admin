@@ -20,3 +20,6 @@ Route::get('/', function () {
 
 // Route::get('ingredients', 'InventoryController@ingredients')->name('ingredients');
 Route::get('ingredients', [InventoryController::class, 'ingredients']);
+Route::get('ingredients', [InventoryController::class, 'ingredients'])->name('ingredients.get');
+Route::post('ingredients', [InventoryController::class, 'addIngredient'])->name('ingredients.post');
+Route::post('setActive', [InventoryController::class, 'setActive'])->name('setActive.post');
